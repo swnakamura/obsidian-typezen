@@ -6,7 +6,7 @@ export default class TypezenPlugin extends Plugin {
 	private ribbon: HTMLElement | null; // .workspace-ribbon
 	private leftSide: HTMLElement | null; // .workspace-split.mod-left-split
 	private rightSide: HTMLElement | null; // .workspace-split.mod-right-split
-	private tabBar: HTMLElement | null; // .workspace-tab-header-container
+	private tabBar: NodeListOf<Element> | null; // .workspace-tab-header-container
 	private center: HTMLElement | null; // .workspace-split.mod-root
 
 	constructor(app: App, manifest: PluginManifest) {
@@ -17,20 +17,18 @@ export default class TypezenPlugin extends Plugin {
 			this.leftSide = document.querySelector('.workspace-split.mod-left-split');
 			this.rightSide = document.querySelector('.workspace-split.mod-right-split');
 			this.center = document.querySelector('.workspace-split.mod-root');
-			this.tabBar = this.center?.querySelector('.workspace-split.mod-root .workspace-tab-header-container') ?? null;
+			this.tabBar = this.center?.querySelectorAll('.workspace-split.mod-root .workspace-tab-header-container') ?? null;
 		})
 	}
 
-	async onload() {		
+	async onload() {	
 		// turn off interface
 		this.registerEvent(this.app.workspace.on('editor-change', (editor, info) => {
 			if (this.elementsShown) {
 				this.elementsShown = false;
-				[this.ribbon, this.leftSide, this.rightSide, this.tabBar].forEach((element) => {
-					if (element) {
-						element.addClass('typezen-hide');
-					}
-				})
+				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.addClass('typezen-hide'));
+
+				this.tabBar?.forEach((element) => element?.addClass('typezen-hide'));
 			}
 		}))
 
@@ -38,11 +36,8 @@ export default class TypezenPlugin extends Plugin {
 		this.app.workspace.containerEl.addEventListener('mousemove', (event) => {
 			if (!this.elementsShown) {
 				this.elementsShown = true;
-				[this.ribbon, this.leftSide, this.rightSide, this.tabBar].forEach((element) => {
-					if (element) {
-						element.removeClass('typezen-hide')
-					}
-				})
+				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.removeClass('typezen-hide'))
+				this.tabBar?.forEach((element) => element?.removeClass('typezen-hide'))
 			}
 		})
 	}
