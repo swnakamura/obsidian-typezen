@@ -7,7 +7,7 @@ export default class TypezenPlugin extends Plugin {
 	private leftSide: HTMLElement | null; // .workspace-split.mod-left-split
 	private rightSide: HTMLElement | null; // .workspace-split.mod-right-split
 	private tabBar: NodeListOf<Element> | null; // .workspace-tab-header-container
-	private center: HTMLElement | null; // .workspace-split.mod-root
+	// private center: HTMLElement | null; // .workspace-split.mod-root
 
 	constructor(app: App, manifest: PluginManifest) {
 		super(app, manifest);
@@ -16,8 +16,8 @@ export default class TypezenPlugin extends Plugin {
 			this.ribbon = document.querySelector('.workspace-ribbon');
 			this.leftSide = document.querySelector('.workspace-split.mod-left-split');
 			this.rightSide = document.querySelector('.workspace-split.mod-right-split');
-			this.center = document.querySelector('.workspace-split.mod-root');
-			this.tabBar = this.center?.querySelectorAll('.workspace-split.mod-root .workspace-tab-header-container') ?? null;
+			// this.center = document.querySelector('.workspace-split.mod-root');
+			// this.tabBar = this.center?.querySelectorAll('.workspace-split.mod-root .workspace-tab-header-container') ?? null;
 		})
 	}
 
