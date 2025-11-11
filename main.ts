@@ -32,8 +32,18 @@ export default class TypezenPlugin extends Plugin {
 			}
 		}))
 
-		// turn on interface
+		// turn on interface — only when the cursor leaves the editor/text area
 		this.app.workspace.containerEl.addEventListener('mousemove', (event) => {
+			// If the cursor is still inside the editor/text area, keep zen mode active.
+			const target = event.target as HTMLElement | null;
+			const isInsideEditor = Boolean(target && (
+				// common editor/content classes used by Obsidian / CodeMirror
+				target.closest('.cm-editor, .cm-content')
+			));
+			if (isInsideEditor) {
+				return;
+			}
+
 			if (!this.elementsShown) {
 				this.elementsShown = true;
 				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.remove('typezen-hide'));
