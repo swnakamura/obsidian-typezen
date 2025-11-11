@@ -26,9 +26,9 @@ export default class TypezenPlugin extends Plugin {
 		this.registerEvent(this.app.workspace.on('editor-change', (editor, info) => {
 			if (this.elementsShown) {
 				this.elementsShown = false;
-				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.addClass('typezen-hide'));
+				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.add('typezen-hide'));
 
-				this.tabBar?.forEach((element) => element?.addClass('typezen-hide'));
+				this.tabBar?.forEach((element) => element?.classList.add('typezen-hide'));
 			}
 		}))
 
@@ -36,8 +36,8 @@ export default class TypezenPlugin extends Plugin {
 		this.app.workspace.containerEl.addEventListener('mousemove', (event) => {
 			if (!this.elementsShown) {
 				this.elementsShown = true;
-				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.removeClass('typezen-hide'))
-				this.tabBar?.forEach((element) => element?.removeClass('typezen-hide'))
+				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.remove('typezen-hide'));
+				this.tabBar?.forEach((element) => element?.classList.remove('typezen-hide'));
 			}
 		})
 	}
