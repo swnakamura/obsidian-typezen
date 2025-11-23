@@ -16,8 +16,6 @@ export default class TypezenPlugin extends Plugin {
 			this.ribbon = document.querySelector('.workspace-ribbon');
 			this.leftSide = document.querySelector('.workspace-split.mod-left-split');
 			this.rightSide = document.querySelector('.workspace-split.mod-right-split');
-			// this.center = document.querySelector('.workspace-split.mod-root');
-			// this.tabBar = this.center?.querySelectorAll('.workspace-split.mod-root .workspace-tab-header-container') ?? null;
 		})
 	}
 
@@ -25,12 +23,9 @@ export default class TypezenPlugin extends Plugin {
 		// turn off interface
 		this.registerEvent(this.app.workspace.on('editor-change', (editor, info) => {
 			if (this.elementsShown) {
-				this.elementsShown = false;
-				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.add('typezen-hide'));
-
-				this.tabBar?.forEach((element) => element?.classList.add('typezen-hide'));
+				this.hideUI();
 			}
-		}))
+		}));
 
 		// turn on interface — only when the cursor leaves the editor/text area
 		this.app.workspace.containerEl.addEventListener('mousemove', (event) => {
@@ -45,10 +40,32 @@ export default class TypezenPlugin extends Plugin {
 			}
 
 			if (!this.elementsShown) {
-				this.elementsShown = true;
-				[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.remove('typezen-hide'));
-				this.tabBar?.forEach((element) => element?.classList.remove('typezen-hide'));
+				// Only show UI when the window/document currently has focus.
+				if (document.hasFocus && document.hasFocus()) {
+					this.showUI();
+				}
 			}
 		})
+
+	}
+
+	private ensureElements() {
+		if (!this.ribbon) this.ribbon = document.querySelector('.workspace-ribbon');
+		if (!this.leftSide) this.leftSide = document.querySelector('.workspace-split.mod-left-split');
+		if (!this.rightSide) this.rightSide = document.querySelector('.workspace-split.mod-right-split');
+	}
+
+	private hideUI() {
+		this.ensureElements();
+		if (this.elementsShown) {
+			this.elementsShown = false;
+			[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.add('typezen-hide'));
+		}
+	}
+
+	private showUI() {
+		this.ensureElements();
+		this.elementsShown = true;
+		[this.ribbon, this.leftSide, this.rightSide].forEach((element) => element?.classList.remove('typezen-hide'));
 	}
 }
