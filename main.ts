@@ -19,7 +19,7 @@ export default class TypezenPlugin extends Plugin {
 		})
 	}
 
-	async onload() {	
+	async onload() {
 		// turn off interface
 		this.registerEvent(this.app.workspace.on('editor-change', (editor, info) => {
 			if (this.elementsShown) {
@@ -27,7 +27,14 @@ export default class TypezenPlugin extends Plugin {
 			}
 		}));
 
-		// turn on interface — only when the cursor leaves the editor/text area
+		// turn on interface when focusing on search input
+		this.registerDomEvent(this.app.workspace.containerEl, 'focusin', (event) => {
+			const target = event.target as HTMLElement;
+			if (target.closest('.search-input-container')) {
+				this.showUI();
+			}
+		});
+
 		this.app.workspace.containerEl.addEventListener('mousemove', (event) => {
 			// If the cursor is still inside the editor/text area, keep zen mode active.
 			const target = event.target as HTMLElement | null;

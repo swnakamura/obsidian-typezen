@@ -1,8 +1,9 @@
-# This is a fork of Typezen Plugin for Obsidian for customization.
+# This is a fork of Obsidian Typezen Plugin for customization.
 
 Differences from the original plugins are:
 - Hidden sidebars become visible only when mouse cursor moves on them.
-- Tab list is always visible.
+- Tab list is always visible to make tab switching with keyboard shortcuts easier.
+- When focusing on search box, sidebars become visible.
 
 ----
 
